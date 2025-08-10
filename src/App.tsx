@@ -28,7 +28,7 @@ function App() {
           <input
             type="radio"
             name="gender"
-            value="male"
+            value="男性"
             checked={gender === "男性"}
             onChange={e => setGender(e.target.value)}
           />
@@ -38,7 +38,7 @@ function App() {
           <input
             type="radio"
             name="gender"
-            value="female"
+            value="女性"
             checked={gender === "女性"}
             onChange={e => setGender(e.target.value)}
           />
