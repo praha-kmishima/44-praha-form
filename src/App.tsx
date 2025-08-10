@@ -1,53 +1,70 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+
+type FormValues = {
+  name: string;
+  gender: string;
+};
 
 function App() {
-  const [name, setName] = useState("");
-  const [gender, setGender] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    mode: "onChange",
+  });
 
-  const handleSubmit = () => {
-    console.log("名前:", name);
-    console.log("性別:", gender);
+  const onSubmit = (data: FormValues) => {
+    console.log("名前:", data.name);
+    console.log("性別:", data.gender);
   };
 
   return (
     <>
       <h1>フォーム</h1>
-      <div>
-        <label>
-          名前:
-          <input
-            type="text"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        性別:
-        <label>
-          <input
-            type="radio"
-            name="gender"
-            value="男性"
-            checked={gender === "男性"}
-            onChange={e => setGender(e.target.value)}
-          />
-          男性
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="gender"
-            value="女性"
-            checked={gender === "女性"}
-            onChange={e => setGender(e.target.value)}
-          />
-          女性
-        </label>
-      </div>
-      <button type="button" onClick={handleSubmit}>
-        送信
-      </button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label>
+            名前:
+            <input
+              type="text"
+              {...register("name", {
+                required: "名前は必須です",
+                maxLength: {
+                  value: 10,
+                  message: "名前は10文字以内で入力してください",
+                },
+              })}
+            />
+          </label>
+          {/* 名前入力時のエラーメッセージ */}
+          {errors.name && (
+            <div style={{ color: "red" }}>{errors.name.message}</div>
+          )}
+        </div>
+        <div>
+          性別:
+          <label>
+            <input
+              type="radio"
+              value="男性"
+              {...register("gender")}
+            />
+            男性
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="女性"
+              {...register("gender")}
+            />
+            女性
+          </label>
+        </div>
+        <button type="submit">
+          送信
+        </button>
+      </form>
     </>
   );
 }
