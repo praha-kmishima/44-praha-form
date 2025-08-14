@@ -1,21 +1,18 @@
-import { useForm, type FieldErrors } from "react-hook-form";
+import { 
+  useForm, 
+  type FieldErrors, 
+  type UseFormRegister, 
+  type UseFormHandleSubmit 
+} from "react-hook-form";
 
 export type FormValues = {
   name: string;
   gender: string;
 };
 
-type RegisterReturn = {
-  name: string;
-  value?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
-  ref: (instance: HTMLInputElement | null) => void;
-};
-
 type UseCustomFormReturn = {
-  register: (field: keyof FormValues, options?: any) => RegisterReturn;
-  handleSubmit: (cb: (data: FormValues) => void) => (e?: React.BaseSyntheticEvent) => void;
+  register: UseFormRegister<FormValues>;
+  handleSubmit: UseFormHandleSubmit<FormValues>;
   errors: FieldErrors<FormValues>;
 };
 
@@ -31,4 +28,4 @@ export const useCustomForm = (): UseCustomFormReturn => {
     handleSubmit,
     errors,
   };
-}
+};
